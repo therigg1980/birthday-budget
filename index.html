@@ -12,40 +12,47 @@
             --danger: #e74c3c;
             --bg: #f4f7f6;
         }
-        body { font-family: sans-serif; background: var(--bg); margin: 0; padding: 10px; color: var(--primary); }
-        .container { max-width: 800px; margin: 0 auto; background: white; padding: 15px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        body { font-family: -apple-system, system-ui, sans-serif; background: var(--bg); margin: 0; padding: 10px; color: var(--primary); }
+        .container { max-width: 500px; margin: 0 auto; background: white; padding: 15px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); box-sizing: border-box; }
         
-        /* Dashboard Stays Compact */
+        h1 { text-align: center; font-size: 1.3rem; margin: 10px 0 20px 0; }
+
+        /* Dashboard: Stays on top, no scroll */
         .dashboard { 
-            display: flex; flex-wrap: wrap; gap: 10px; background: #fff; padding: 10px; 
+            display: grid; grid-template-columns: 1fr 1fr; gap: 10px; background: #fff; padding: 12px; 
             border: 2px solid var(--accent); border-radius: 8px; margin-bottom: 20px;
-            position: sticky; top: 5px; z-index: 100;
+            position: sticky; top: 5px; z-index: 100; box-shadow: 0 4px 6px rgba(0,0,0,0.05);
         }
-        .dash-item { flex: 1 1 120px; display: flex; flex-direction: column; }
-        .dash-item label { font-size: 0.7rem; font-weight: bold; text-transform: uppercase; margin-bottom: 4px; color: #7f8c8d; }
-        .dash-input { padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; font-weight: bold; }
+        .dash-item { display: flex; flex-direction: column; }
+        .dash-item label { font-size: 0.65rem; font-weight: bold; text-transform: uppercase; margin-bottom: 4px; color: #7f8c8d; }
+        .dash-input { padding: 8px; border: 1px solid #ddd; border-radius: 6px; font-size: 16px; font-weight: bold; width: 100%; box-sizing: border-box; }
 
-        /* The Table Fix */
-        .row-item {
-            display: flex; align-items: center; justify-content: space-between;
-            padding: 12px 0; border-bottom: 1px solid #eee; flex-wrap: wrap;
+        /* Family Row: Built for vertical stacking */
+        .family-row {
+            padding: 15px 0; border-bottom: 1px solid #eee;
+            display: flex; flex-direction: column; gap: 10px;
         }
-        .family-info { flex: 1 1 100%; display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
-        .name-input { font-weight: bold; border: none; font-size: 1rem; width: 120px; background: transparent; }
         
-        .inputs-area { display: flex; gap: 8px; flex: 1; align-items: center; }
-        .input-box { display: flex; flex-direction: column; align-items: center; }
-        .input-box span { font-size: 0.6rem; text-transform: uppercase; color: #999; margin-bottom: 2px; }
-        .val-input { width: 50px; padding: 6px; text-align: center; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; }
+        /* Top line: Name and Total always visible together */
+        .row-header { display: flex; justify-content: space-between; align-items: center; }
+        .name-input { font-weight: 800; border: none; font-size: 1.1rem; width: 60%; background: transparent; outline: none; color: var(--secondary); }
+        .total-badge { text-align: right; }
+        .total-label { display: block; font-size: 0.6rem; text-transform: uppercase; color: #999; font-weight: bold; }
+        .total-amt { color: var(--accent); font-weight: 800; font-size: 1.2rem; }
 
-        .total-area { text-align: right; min-width: 90px; }
-        .total-amt { color: var(--accent); font-weight: bold; font-size: 1.1rem; display: block; }
+        /* Bottom line: Inputs grouped together */
+        .row-inputs { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+        .input-group { display: flex; flex-direction: column; align-items: center; flex: 1; }
+        .input-group span { font-size: 0.6rem; text-transform: uppercase; color: #bbb; margin-bottom: 4px; font-weight: bold; }
+        .val-input { width: 100%; max-width: 60px; padding: 8px; text-align: center; border: 1px solid #eee; border-radius: 6px; font-size: 16px; background: #fafafa; }
         
-        .btn-del { color: var(--danger); background: none; border: none; font-size: 1.2rem; cursor: pointer; padding: 0 10px; }
-        .btn-add { width: 100%; padding: 12px; background: var(--secondary); color: white; border: none; border-radius: 6px; font-weight: bold; margin: 15px 0; }
+        .btn-del { color: var(--danger); background: #fff5f5; border: 1px solid #ffebeb; padding: 5px 10px; border-radius: 6px; font-size: 0.7rem; font-weight: bold; margin-left: 10px; }
+        .btn-add { width: 100%; padding: 16px; background: var(--secondary); color: white; border: none; border-radius: 8px; font-weight: bold; font-size: 1rem; margin-top: 15px; cursor: pointer; }
 
-        .invoice-box { background: var(--primary); color: white; padding: 15px; border-radius: 8px; margin-top: 20px; }
-        .inv-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        /* Final Summary Box */
+        .invoice-summary { background: var(--primary); color: white; padding: 15px; border-radius: 10px; margin-top: 30px; }
+        .inv-line { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.1); font-size: 0.9rem; }
+        .inv-line:last-child { border-bottom: none; }
     </style>
 </head>
 <body>
@@ -56,15 +63,15 @@
     <div class="dashboard">
         <div class="dash-item"><label>Accom (£)</label><input type="number" id="accom-in" class="dash-input" value="4000" oninput="calc()"></div>
         <div class="dash-item"><label>Food (£)</label><input type="number" id="food-in" class="dash-input" value="350" oninput="calc()"></div>
-        <div class="dash-item"><label>Activity (£)</label><input type="number" id="act-in" class="dash-input" value="0" oninput="calc()"></div>
-        <div class="dash-item"><label>Rooms</label><div id="room-total" style="font-weight:bold; color:var(--accent); margin-top:5px">0</div></div>
+        <div class="dash-item"><label>Activities (£)</label><input type="number" id="act-in" class="dash-input" value="0" oninput="calc()"></div>
+        <div class="dash-item"><label>Total Rooms</label><div id="room-total" style="font-weight:800; color:var(--accent); font-size:1.2rem; margin-top:4px">0</div></div>
     </div>
 
     <div id="list"></div>
     <button class="btn-add" onclick="add()">+ Add Family Group</button>
 
-    <div class="invoice-box">
-        <h3 style="margin-top:0">Total Invoices</h3>
+    <div class="invoice-summary">
+        <h3 style="margin-top:0; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 8px;">Quick Summary</h3>
         <div id="invoices"></div>
     </div>
 </div>
@@ -101,33 +108,33 @@
             const total = aS + fS + actS;
 
             list.innerHTML += `
-                <div class="row-item">
-                    <div class="family-info">
+                <div class="family-row">
+                    <div class="row-header">
                         <input type="text" class="name-input" value="${f.name}" oninput="upd(${i},'name',this.value)">
+                        <div class="total-badge">
+                            <span class="total-label">Owes Total</span>
+                            <span class="total-amt">£${total.toFixed(2)}</span>
+                        </div>
+                    </div>
+                    <div class="row-inputs">
+                        <div class="input-group"><span>People</span><input type="number" class="val-input" value="${f.count}" oninput="upd(${i},'count',parseFloat(this.value)||0)"></div>
+                        <div class="input-group"><span>Rooms</span><input type="number" class="val-input" value="${f.rooms}" oninput="upd(${i},'rooms',parseFloat(this.value)||0)"></div>
+                        <div class="input-group"><span>Food Units</span><input type="number" class="val-input" value="${f.u1}" step="0.25" oninput="upd(${i},'u1',parseFloat(this.value)||0)"></div>
                         <button class="btn-del" onclick="rem(${i})">✕</button>
-                    </div>
-                    <div class="inputs-area">
-                        <div class="input-box"><span>Ppl</span><input type="number" class="val-input" value="${f.count}" oninput="upd(${i},'count',parseFloat(this.value)||0)"></div>
-                        <div class="input-box"><span>Rooms</span><input type="number" class="val-input" value="${f.rooms}" oninput="upd(${i},'rooms',parseFloat(this.value)||0)"></div>
-                        <div class="input-box"><span>Food</span><input type="number" class="val-input" value="${f.u1}" step="0.25" oninput="upd(${i},'u1',parseFloat(this.value)||0)"></div>
-                    </div>
-                    <div class="total-area">
-                        <span style="font-size:0.6rem; color:#999; text-transform:uppercase">Owes</span>
-                        <span class="total-amt">£${total.toFixed(2)}</span>
                     </div>
                 </div>`;
 
             inv.innerHTML += `
-                <div class="inv-row">
-                    <span>${f.name}</span>
-                    <span style="color:#2ecc71; font-weight:bold">£${total.toLocaleString(undefined,{minimumFractionDigits:2})}</span>
+                <div class="inv-line">
+                    <span style="font-weight:bold">${f.name}</span>
+                    <span style="color:#2ecc71; font-weight:800">£${total.toLocaleString(undefined,{minimumFractionDigits:2})}</span>
                 </div>`;
         });
     }
 
     function upd(i, fld, v) { families[i][fld] = v; calc(); }
-    function add() { families.push({ name: "New", count: 2, u1: 1, rooms: 1 }); calc(); }
-    function rem(i) { families.splice(i, 1); calc(); }
+    function add() { families.push({ name: "New Group", count: 2, u1: 1.5, rooms: 1 }); calc(); }
+    function remove(i) { families.splice(i, 1); calc(); }
 
     calc();
 </script>
