@@ -32,19 +32,17 @@
         }
         h1 { text-align: center; margin-bottom: 15px; font-size: 1.6rem; color: var(--primary); }
         
-        /* Explainer Section */
         .explainer {
             background: #ebf5fb;
             border-left: 4px solid var(--secondary);
             padding: 15px;
             margin-bottom: 25px;
             border-radius: 4px;
-            font-size: 0.9rem;
-            line-height: 1.4;
+            font-size: 0.95rem;
+            line-height: 1.5;
         }
-        .explainer h3 { margin-top: 0; color: var(--secondary); font-size: 1rem; }
-        .explainer ul { margin: 10px 0 0 20px; padding: 0; }
-        .explainer li { margin-bottom: 8px; }
+        .explainer p { margin: 5px 0; }
+        .explainer strong { color: var(--secondary); }
 
         .global-inputs {
             background: #fff;
@@ -132,31 +130,29 @@
     <h1>Donnas' Big Birthday</h1>
 
     <div class="explainer">
-        <h3>How the costs are split:</h3>
-        <ul>
-            <li><strong>Accommodation:</strong> Split by <strong>Room Usage</strong>. </li>
-            <li><strong>Food & Groceries:</strong> Split by <strong>Weighted Units</strong>. This ensures children and teens pay a smaller share than adults:
-                <br><small>Adult (1.0) • Teen (0.5) • Kid (0.25) • William... (2.5)</small></li>
-            <li><strong>Activities:</strong> Split <strong>Equally per Family</strong>. If there is any</li>
-        </ul>
+        <p><strong>Accommodation:</strong> Split per room usage</p>
+        <p><strong>Food:</strong> Per unit value. Young kids: 0.25 Teens: 0.5 Adults 1.0 William 2.5</p>
+        <p><strong>Activities:</strong> Just split.</p>
+        <p><em>Note this is just an example, a tool to get an idea on budget.</em></p>
+        <p style="color: var(--danger); font-weight: bold;">Make sure you scroll horizontal on tables when viewing on a mobile or view it landscape.</p>
     </div>
 
     <div class="global-inputs">
         <div class="input-item">
             <label>Accom. Budget (£)</label>
-            <input type="number" id="budget-input" value="4000" class="main-input" oninput="calculateAll()">
+            <input type="number" id="budget-input" value="4000" class="main-input" onchange="calculateAll()">
         </div>
         <div class="input-item">
             <label>Food Budget (£)</label>
-            <input type="number" id="food-input" value="350" class="main-input" oninput="calculateAll()">
+            <input type="number" id="food-input" value="350" class="main-input" onchange="calculateAll()">
         </div>
         <div class="input-item">
             <label>Activities (£)</label>
-            <input type="number" id="activity-input" value="0" class="main-input" oninput="calculateAll()">
+            <input type="number" id="activity-input" value="0" class="main-input" onchange="calculateAll()">
         </div>
         <div class="input-item">
             <label>Trip Length (Days)</label>
-            <input type="number" id="days-input" value="7" min="1" class="main-input" oninput="calculateAll()">
+            <input type="number" id="days-input" value="7" min="1" class="main-input" onchange="calculateAll()">
         </div>
         <div class="input-item" style="grid-column: 1 / -1;">
             <div id="total-rooms-badge" class="counter-badge">0 Rooms Total</div>
@@ -255,54 +251,49 @@
 
         document.getElementById('total-rooms-badge').innerText = totalRooms + " Total Rooms Booked";
 
-        // Summary Statistics
         const avgAccomPerDay = totalPeople > 0 ? (accomBudget / totalPeople) / days : 0;
         const avgFoodPerDay = totalPeople > 0 ? (foodBudget / totalPeople) / days : 0;
 
-        // Populate Table 1 (Rooms)
         const rBody = document.getElementById('room-body');
         rBody.innerHTML = '';
         families.forEach((f, i) => {
             const share = totalRooms > 0 ? (f.rooms / totalRooms) * accomBudget : 0;
             rBody.innerHTML += `<tr>
-                <td><input type="text" class="name-input" value="${f.name}" oninput="updateField(${i},'name',this.value)"></td>
-                <td><input type="number" style="width:50px" value="${f.count}" oninput="updateField(${i},'count',parseInt(this.value)||0)"></td>
-                <td><input type="number" style="width:50px" value="${f.rooms}" step="1" oninput="updateField(${i},'rooms',parseFloat(this.value)||0)"></td>
+                <td><input type="text" class="name-input" value="${f.name}" onchange="updateField(${i},'name',this.value)"></td>
+                <td><input type="number" style="width:50px" value="${f.count}" onchange="updateField(${i},'count',parseInt(this.value)||0)"></td>
+                <td><input type="number" style="width:50px" value="${f.rooms}" step="1" onchange="updateField(${i},'rooms',parseFloat(this.value)||0)"></td>
                 <td class="currency">£${share.toFixed(2)}</td>
                 <td><button class="btn btn-del" onclick="removeFamily(${i})">✕</button></td>
             </tr>`;
         });
         document.getElementById('summary-r').innerText = `Avg Accom: £${avgAccomPerDay.toFixed(2)} per person / day`;
 
-        // Populate Table 2 (Food)
         const wBody = document.getElementById('weighted-body');
         wBody.innerHTML = '';
         families.forEach((f, i) => {
             const share = totalU1 > 0 ? (f.u1 / totalU1) * foodBudget : 0;
             wBody.innerHTML += `<tr>
-                <td><input type="text" class="name-input" value="${f.name}" oninput="updateField(${i},'name',this.value)"></td>
-                <td><input type="number" style="width:50px" value="${f.count}" oninput="updateField(${i},'count',parseInt(this.value)||0)"></td>
-                <td><input type="number" style="width:60px" value="${f.u1}" step="0.25" oninput="updateField(${i},'u1',parseFloat(this.value)||0)"></td>
+                <td><input type="text" class="name-input" value="${f.name}" onchange="updateField(${i},'name',this.value)"></td>
+                <td><input type="number" style="width:50px" value="${f.count}" onchange="updateField(${i},'count',parseInt(this.value)||0)"></td>
+                <td><input type="number" style="width:60px" value="${f.u1}" step="0.25" onchange="updateField(${i},'u1',parseFloat(this.value)||0)"></td>
                 <td class="currency">£${share.toFixed(2)}</td>
                 <td><button class="btn btn-del" onclick="removeFamily(${i})">✕</button></td>
             </tr>`;
         });
         document.getElementById('summary-w').innerText = `Avg Food: £${avgFoodPerDay.toFixed(2)} per person / day`;
 
-        // Populate Table 3 (Activities)
         const aBody = document.getElementById('activity-body');
         aBody.innerHTML = '';
         families.forEach((f, i) => {
             const share = totalGroups > 0 ? (activityBudget / totalGroups) : 0;
             aBody.innerHTML += `<tr>
-                <td><input type="text" class="name-input" value="${f.name}" oninput="updateField(${i},'name',this.value)"></td>
+                <td><input type="text" class="name-input" value="${f.name}" onchange="updateField(${i},'name',this.value)"></td>
                 <td class="currency">£${share.toFixed(2)}</td>
                 <td><button class="btn btn-del" onclick="removeFamily(${i})">✕</button></td>
             </tr>`;
         });
         document.getElementById('summary-a').innerText = `Activity Cost: £${(totalGroups > 0 ? activityBudget / totalGroups : 0).toFixed(2)} flat per group`;
 
-        // Populate Table 4 (Grand Totals)
         const gBody = document.getElementById('grand-body');
         gBody.innerHTML = '';
         families.forEach((f) => {
