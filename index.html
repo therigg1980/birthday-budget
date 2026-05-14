@@ -1,300 +1,111 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Donnas' Big Birthday</title>
-    <style>
-        :root {
-            --primary: #2c3e50;
-            --accent: #27ae60;
-            --secondary: #2980b9;
-            --danger: #e74c3c;
-            --bg: #f4f7f6;
-        }
-        
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background-color: var(--bg);
-            color: var(--primary);
-            margin: 0;
-            padding: 10px;
-            display: flex;
-            justify-content: center;
-        }
+<style>
+    :root {
+        --primary: #2c3e50;
+        --accent: #27ae60;
+        --secondary: #2980b9;
+        --danger: #e74c3c;
+        --bg: #f4f7f6;
+    }
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        background-color: var(--bg);
+        color: var(--primary);
+        display: flex;
+        justify-content: center;
+        padding: 10px;
+        margin: 0;
+    }
+    .container {
+        background: white;
+        padding: 15px;
+        border-radius: 12px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        max-width: 850px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    h1 { text-align: center; font-size: 1.4rem; margin-bottom: 15px; }
+    h2 { border-bottom: 2px solid #eee; padding-bottom: 8px; margin-top: 25px; color: var(--secondary); font-size: 1.1em; }
+    
+    .global-inputs {
+        background: #fff;
+        padding: 12px;
+        border: 2px solid var(--accent);
+        border-radius: 8px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+        margin-bottom: 20px;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+    }
+    
+    .input-item { flex: 1 1 100px; text-align: center; }
+    .input-item label { display: block; font-weight: 600; margin-bottom: 3px; font-size: 0.7em; text-transform: uppercase; }
 
-        .container {
-            background: white;
-            padding: 15px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            max-width: 600px; /* Narrower for mobile-first feel */
-            width: 100%;
-            box-sizing: border-box;
-        }
-
-        h1 { text-align: center; font-size: 1.4rem; margin: 10px 0 20px 0; }
-        h2 { border-bottom: 2px solid #eee; padding-bottom: 8px; margin-top: 25px; color: var(--secondary); font-size: 1.1em; }
-        
-        /* Global Inputs - Responsive Grid */
-        .global-inputs {
-            background: #fff;
-            padding: 12px;
-            border: 2px solid var(--accent);
-            border-radius: 8px;
-            display: grid;
-            grid-template-columns: repeat(2, 1fr); /* 2x2 grid on mobile */
-            gap: 12px;
-            margin-bottom: 20px;
-            position: sticky;
-            top: 5px;
-            z-index: 100;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-        }
-
-        .input-item { display: flex; flex-direction: column; align-items: center; }
-        .input-item label { font-weight: 600; margin-bottom: 4px; font-size: 0.7em; text-transform: uppercase; color: #666; }
-
-        .counter-badge {
-            background: #e6f4ea;
-            color: var(--accent);
-            font-size: 1.1em;
-            font-weight: bold;
-            padding: 4px 12px;
-            border-radius: 6px;
-            border: 2px dashed var(--accent);
-        }
-
-        /* Table Container - Mobile Scroll */
-        .table-responsive {
-            width: 100%;
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-            margin-bottom: 10px;
-            border-radius: 4px;
-        }
-
-        table {
-            width: 100%;
-            min-width: 480px; /* Ensures enough space for data on small screens */
-            border-collapse: collapse;
-            font-size: 0.9em;
-        }
-
-        th, td { text-align: left; padding: 12px 8px; border-bottom: 1px solid #eee; }
-        th { background: #fafafa; color: #7f8c8d; font-size: 0.7em; text-transform: uppercase; }
-
-        /* Form Elements */
-        input { 
-            padding: 8px; 
-            border: 1px solid #ddd; 
-            border-radius: 4px; 
-            font-size: 16px !important; /* Prevents auto-zoom on iOS */
-            box-sizing: border-box;
-        }
-        
-        input[type="number"] { width: 60px; text-align: center; }
-        .name-input { font-weight: 700; border: none; background: transparent; width: 90px; }
-        .main-input { border: 2px solid var(--accent); font-weight: bold; width: 100% !important; max-width: 100px; }
-        
-        .currency { color: var(--accent); font-weight: 700; text-align: right; white-space: nowrap; }
-
-        .summary-box {
-            background: #f8f9fa;
-            padding: 10px;
-            border-radius: 8px;
-            text-align: center;
-            font-weight: 600;
-            font-size: 0.8em;
-            color: var(--secondary);
-            margin-bottom: 15px;
-            border: 1px dashed #cbd5e0;
-        }
-
-        /* Invoice Section - Better Mobile Contrast */
-        .grand-total-section {
-            margin-top: 30px;
-            padding: 15px;
-            background: #2c3e50;
-            color: white;
-            border-radius: 8px;
-        }
-        
-        .grand-total-section h2 { color: white; border-bottom: 1px solid rgba(255,255,255,0.2); margin-top: 0; }
-        .grand-total-section th { background: rgba(255,255,255,0.05); color: #bdc3c7; border: none; }
-        .grand-total-section td { border-bottom: 1px solid rgba(255,255,255,0.1); }
-        .grand-total-section .currency { color: #2ecc71; }
-
-        .btn-add { 
-            background: var(--secondary); 
-            color: white; 
-            margin-bottom: 20px; 
-            width: 100%; 
-            padding: 12px; 
-            border: none; 
-            border-radius: 6px; 
-            font-weight: bold; 
-            font-size: 1rem;
-            cursor: pointer;
-        }
-        
-        .btn-del { background: var(--danger); color: white; padding: 6px 10px; border: none; border-radius: 4px; cursor: pointer; }
-    </style>
-</head>
-<body>
-
-<div class="container">
-    <h1>Donnas' Big Birthday</h1>
-
-    <div class="global-inputs">
-        <div class="input-item">
-            <label>Accom. £</label>
-            <input type="number" id="budget-input" value="4000" step="100" class="main-input" oninput="calculateAll()">
-        </div>
-        <div class="input-item">
-            <label>Food £</label>
-            <input type="number" id="food-input" value="350" step="50" class="main-input" oninput="calculateAll()">
-        </div>
-        <div class="input-item">
-            <label>Days</label>
-            <input type="number" id="days-input" value="7" min="1" class="main-input" oninput="calculateAll()">
-        </div>
-        <div class="input-item">
-            <label>Rooms</label>
-            <div id="total-rooms-badge" class="counter-badge">0</div>
-        </div>
-    </div>
-
-    <button class="btn-add" onclick="addFamily()">+ Add Family Group</button>
-
-    <h2>Accommodation Split</h2>
-    <div class="table-responsive">
-        <table>
-            <thead>
-                <tr>
-                    <th>Family</th>
-                    <th>Ppl</th>
-                    <th>Rooms</th>
-                    <th style="text-align: right;">Total</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody id="room-body"></tbody>
-        </table>
-    </div>
-    <div id="summary-r" class="summary-box"></div>
-
-    <h2>Food Cost Split</h2>
-    <div class="table-responsive">
-        <table>
-            <thead>
-                <tr>
-                    <th>Family</th>
-                    <th>Ppl</th>
-                    <th>Units</th>
-                    <th style="text-align: right;">Total</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody id="weighted-body"></tbody>
-        </table>
-    </div>
-    <div id="summary-w" class="summary-box"></div>
-
-    <div class="grand-total-section">
-        <h2>Final Invoices</h2>
-        <div class="table-responsive">
-            <table>
-                <thead>
-                    <tr>
-                        <th style="color: white;">Family</th>
-                        <th style="color: white;">Accom</th>
-                        <th style="color: white;">Food</th>
-                        <th style="text-align: right; color: white;">Total</th>
-                    </tr>
-                </thead>
-                <tbody id="grand-body"></tbody>
-            </table>
-        </div>
-    </div>
-</div>
-
-<script>
-    let families = [
-        { name: "Rigby", count: 3, u1: 2.25, rooms: 2 },
-        { name: "Smith", count: 6, u1: 3.5, rooms: 3 },
-        { name: "Dickson", count: 4, u1: 3.0, rooms: 2 },
-        { name: "Hall", count: 2, u1: 1.25, rooms: 1 },
-        { name: "Rigby s", count: 2, u1: 2.0, rooms: 1 }
-    ];
-
-    function calculateAll() {
-        const accomBudget = parseFloat(document.getElementById('budget-input').value) || 0;
-        const foodBudget = parseFloat(document.getElementById('food-input').value) || 0;
-        const days = parseFloat(document.getElementById('days-input').value) || 1;
-        
-        const totalPeople = families.reduce((sum, f) => sum + f.count, 0);
-        const totalU1 = families.reduce((sum, f) => sum + f.u1, 0);
-        const totalRooms = families.reduce((sum, f) => sum + f.rooms, 0);
-
-        document.getElementById('total-rooms-badge').innerText = totalRooms;
-
-        const avgAccomPerDay = totalPeople > 0 ? (accomBudget / totalPeople) / days : 0;
-        const avgFoodPerDay = totalPeople > 0 ? (foodBudget / totalPeople) / days : 0;
-
-        // Render Room Table
-        const rBody = document.getElementById('room-body');
-        rBody.innerHTML = '';
-        families.forEach((f, i) => {
-            const share = totalRooms > 0 ? (f.rooms / totalRooms) * accomBudget : 0;
-            rBody.innerHTML += `
-                <tr>
-                    <td><input type="text" class="name-input" value="${f.name}" oninput="updateField(${i}, 'name', this.value)"></td>
-                    <td><input type="number" value="${f.count}" oninput="updateField(${i}, 'count', parseInt(this.value) || 0)"></td>
-                    <td><input type="number" value="${f.rooms}" step="1" oninput="updateField(${i}, 'rooms', parseFloat(this.value) || 0)"></td>
-                    <td class="currency">£${share.toFixed(2)}</td>
-                    <td><button class="btn-del" onclick="removeFamily(${i})">✕</button></td>
-                </tr>`;
-        });
-        document.getElementById('summary-r').innerText = `£${avgAccomPerDay.toFixed(2)} per person / per day`;
-
-        // Render Food Table
-        const wBody = document.getElementById('weighted-body');
-        wBody.innerHTML = '';
-        families.forEach((f, i) => {
-            const share = totalU1 > 0 ? (f.u1 / totalU1) * foodBudget : 0;
-            wBody.innerHTML += `
-                <tr>
-                    <td><input type="text" class="name-input" value="${f.name}" oninput="updateField(${i}, 'name', this.value)"></td>
-                    <td><input type="number" value="${f.count}" oninput="updateField(${i}, 'count', parseInt(this.value) || 0)"></td>
-                    <td><input type="number" value="${f.u1}" step="0.25" oninput="updateField(${i}, 'u1', parseFloat(this.value) || 0)"></td>
-                    <td class="currency">£${share.toFixed(2)}</td>
-                    <td><button class="btn-del" onclick="removeFamily(${i})">✕</button></td>
-                </tr>`;
-        });
-        document.getElementById('summary-w').innerText = `£${avgFoodPerDay.toFixed(2)} per person / per day`;
-
-        // Render Grand Total
-        const gBody = document.getElementById('grand-body');
-        gBody.innerHTML = '';
-        families.forEach((f) => {
-            const aShare = totalRooms > 0 ? (f.rooms / totalRooms) * accomBudget : 0;
-            const fShare = totalU1 > 0 ? (f.u1 / totalU1) * foodBudget : 0;
-            gBody.innerHTML += `
-                <tr>
-                    <td style="font-weight: bold; color: white;">${f.name}</td>
-                    <td style="color: #bdc3c7;">£${aShare.toFixed(2)}</td>
-                    <td style="color: #bdc3c7;">£${fShare.toFixed(2)}</td>
-                    <td class="currency">£${(aShare + fShare).toFixed(2)}</td>
-                </tr>`;
-        });
+    .counter-badge {
+        background: #e6f4ea;
+        color: var(--accent);
+        font-size: 1.1em;
+        font-weight: bold;
+        padding: 4px 10px;
+        border-radius: 6px;
+        border: 2px dashed var(--accent);
     }
 
-    function updateField(i, field, val) { families[i][field] = val; calculateAll(); }
-    function addFamily() { families.push({ name: "New Group", count: 2, u1: 1.5, rooms: 1 }); calculateAll(); }
-    function removeFamily(i) { families.splice(i, 1); calculateAll(); }
+    /* Wrap tables to allow horizontal swiping */
+    .table-responsive {
+        width: 100%;
+        overflow-x: auto;
+        margin-bottom: 10px;
+        border-radius: 8px;
+    }
 
-    calculateAll();
-</script>
-</body>
-</html>
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.9em;
+        min-width: 450px; /* Prevents squashing headers */
+    }
+    th, td { text-align: left; padding: 10px 5px; border-bottom: 1px solid #eee; }
+    th { background: #fafafa; font-weight: 600; font-size: 0.7em; text-transform: uppercase; color: #7f8c8d; }
+    
+    /* Input sizing for mobile */
+    input { padding: 6px; border: 1px solid #ddd; border-radius: 4px; font-size: 16px !important; width: 100%; box-sizing: border-box; }
+    input[type="number"] { width: 50px; text-align: center; }
+    .name-input { font-weight: 700; border: none; background: transparent; width: 80px; }
+
+    .main-input { border: 2px solid var(--accent); font-weight: bold; width: 80px !important; }
+    .currency { color: var(--accent); font-weight: 700; text-align: right; white-space: nowrap; }
+    
+    .summary-box {
+        background: #f8f9fa;
+        padding: 10px;
+        border-radius: 8px;
+        text-align: center;
+        font-weight: 600;
+        font-size: 0.8em;
+        color: var(--secondary);
+        margin-bottom: 15px;
+        border: 1px dashed #cbd5e0;
+    }
+
+    /* Fix for Grand Total layout in Screenshot 2026-05-14 at 14.27.54.png */
+    .grand-total-section {
+        margin-top: 30px;
+        padding: 12px;
+        background: #2c3e50;
+        color: white;
+        border-radius: 8px;
+    }
+    .grand-total-section h2 { color: white; border-bottom: 1px solid rgba(255,255,255,0.2); margin-top: 0; }
+    .grand-total-section th { background: rgba(255,255,255,0.05); color: #bdc3c7; border: none; }
+    .grand-total-section td { border-bottom: 1px solid rgba(255,255,255,0.1); padding: 12px 5px; }
+    .grand-total-section .currency { color: #2ecc71; }
+    .grand-total-section .family-name { font-weight: bold; }
+
+    .btn-add { background: var(--secondary); color: white; margin-bottom: 15px; width: 100%; padding: 12px; border: none; border-radius: 6px; font-weight: bold; }
+    .btn-del { background: var(--danger); color: white; padding: 5px 8px; border: none; border-radius: 4px; font-size: 12px; }
+</style>
