@@ -10,162 +10,212 @@
             --accent: #27ae60;
             --secondary: #2980b9;
             --danger: #e74c3c;
-            --white: #ffffff;
-            --gray: #f4f7f6;
+            --bg: #f4f7f6;
         }
         
         body {
-            font-family: -apple-system, system-ui, sans-serif;
-            background-color: var(--gray);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg);
             color: var(--primary);
             margin: 0;
             padding: 10px;
+            display: flex;
+            justify-content: center;
         }
 
-        .container { max-width: 500px; margin: 0 auto; }
-
-        h1 { text-align: center; font-size: 1.4rem; margin: 15px 0; }
-        h2 { font-size: 1.1rem; color: var(--secondary); margin: 25px 0 10px 0; display: flex; justify-content: space-between; align-items: center; }
-
-        /* Sticky Dashboard */
-        .dashboard {
-            background: var(--white);
+        .container {
+            background: white;
             padding: 15px;
-            border: 2px solid var(--accent);
             border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            max-width: 600px; /* Narrower for mobile-first feel */
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        h1 { text-align: center; font-size: 1.4rem; margin: 10px 0 20px 0; }
+        h2 { border-bottom: 2px solid #eee; padding-bottom: 8px; margin-top: 25px; color: var(--secondary); font-size: 1.1em; }
+        
+        /* Global Inputs - Responsive Grid */
+        .global-inputs {
+            background: #fff;
+            padding: 12px;
+            border: 2px solid var(--accent);
+            border-radius: 8px;
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
+            grid-template-columns: repeat(2, 1fr); /* 2x2 grid on mobile */
+            gap: 12px;
+            margin-bottom: 20px;
             position: sticky;
-            top: 10px;
-            z-index: 1000;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            top: 5px;
+            z-index: 100;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
         }
 
-        .dash-item { display: flex; flex-direction: column; }
-        .dash-item label { font-size: 0.65rem; font-weight: bold; text-transform: uppercase; color: #7f8c8d; margin-bottom: 4px; }
-        .dash-input { 
-            border: 1px solid #ddd; 
+        .input-item { display: flex; flex-direction: column; align-items: center; }
+        .input-item label { font-weight: 600; margin-bottom: 4px; font-size: 0.7em; text-transform: uppercase; color: #666; }
+
+        .counter-badge {
+            background: #e6f4ea;
+            color: var(--accent);
+            font-size: 1.1em;
+            font-weight: bold;
+            padding: 4px 12px;
+            border-radius: 6px;
+            border: 2px dashed var(--accent);
+        }
+
+        /* Table Container - Mobile Scroll */
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            margin-bottom: 10px;
+            border-radius: 4px;
+        }
+
+        table {
+            width: 100%;
+            min-width: 480px; /* Ensures enough space for data on small screens */
+            border-collapse: collapse;
+            font-size: 0.9em;
+        }
+
+        th, td { text-align: left; padding: 12px 8px; border-bottom: 1px solid #eee; }
+        th { background: #fafafa; color: #7f8c8d; font-size: 0.7em; text-transform: uppercase; }
+
+        /* Form Elements */
+        input { 
             padding: 8px; 
-            border-radius: 6px; 
-            font-size: 16px; 
-            font-weight: bold;
-            color: var(--primary);
-        }
-
-        /* Family Cards (Replaces Tables) */
-        .family-card {
-            background: var(--white);
-            border-radius: 10px;
-            padding: 15px;
-            margin-bottom: 12px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-            display: grid;
-            grid-template-columns: 1fr auto auto;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .family-name { font-weight: bold; border: none; font-size: 1rem; width: 100%; }
-        
-        .card-controls { display: flex; gap: 8px; align-items: center; }
-        .control-group { display: flex; flex-direction: column; align-items: center; }
-        .control-group span { font-size: 0.6rem; text-transform: uppercase; color: #95a5a6; margin-bottom: 2px; }
-        
-        .card-input { 
-            width: 50px; 
-            padding: 6px; 
-            text-align: center; 
-            border: 1px solid #eee; 
+            border: 1px solid #ddd; 
             border-radius: 4px; 
-            font-size: 16px; 
+            font-size: 16px !important; /* Prevents auto-zoom on iOS */
+            box-sizing: border-box;
+        }
+        
+        input[type="number"] { width: 60px; text-align: center; }
+        .name-input { font-weight: 700; border: none; background: transparent; width: 90px; }
+        .main-input { border: 2px solid var(--accent); font-weight: bold; width: 100% !important; max-width: 100px; }
+        
+        .currency { color: var(--accent); font-weight: 700; text-align: right; white-space: nowrap; }
+
+        .summary-box {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 0.8em;
+            color: var(--secondary);
+            margin-bottom: 15px;
+            border: 1px dashed #cbd5e0;
         }
 
-        .btn-del { 
-            background: #fdf0f0; 
-            color: var(--danger); 
+        /* Invoice Section - Better Mobile Contrast */
+        .grand-total-section {
+            margin-top: 30px;
+            padding: 15px;
+            background: #2c3e50;
+            color: white;
+            border-radius: 8px;
+        }
+        
+        .grand-total-section h2 { color: white; border-bottom: 1px solid rgba(255,255,255,0.2); margin-top: 0; }
+        .grand-total-section th { background: rgba(255,255,255,0.05); color: #bdc3c7; border: none; }
+        .grand-total-section td { border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .grand-total-section .currency { color: #2ecc71; }
+
+        .btn-add { 
+            background: var(--secondary); 
+            color: white; 
+            margin-bottom: 20px; 
+            width: 100%; 
+            padding: 12px; 
             border: none; 
-            border-radius: 50%; 
-            width: 28px; 
-            height: 28px; 
-            font-weight: bold;
+            border-radius: 6px; 
+            font-weight: bold; 
+            font-size: 1rem;
             cursor: pointer;
         }
-
-        /* Totals Section */
-        .invoice-card {
-            background: var(--primary);
-            color: white;
-            padding: 20px;
-            border-radius: 12px;
-            margin-top: 30px;
-        }
-
-        .invoice-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 10px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .invoice-row:last-child { border-bottom: none; }
-        .invoice-row .name { font-weight: bold; }
-        .invoice-row .amt { color: #2ecc71; font-weight: bold; }
         
-        .btn-add {
-            width: 100%;
-            padding: 15px;
-            background: var(--secondary);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-weight: bold;
-            font-size: 1rem;
-            margin-top: 10px;
-        }
-
-        .breakdown-text {
-            text-align: center;
-            font-size: 0.8rem;
-            color: #7f8c8d;
-            margin: 10px 0;
-            font-style: italic;
-        }
+        .btn-del { background: var(--danger); color: white; padding: 6px 10px; border: none; border-radius: 4px; cursor: pointer; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>Donnas' 40th Budget</h1>
+    <h1>Donnas' Big Birthday</h1>
 
-    <div class="dashboard">
-        <div class="dash-item">
-            <label>Accom Budget (£)</label>
-            <input type="number" id="budget-input" class="dash-input" value="4000" oninput="calculate()">
+    <div class="global-inputs">
+        <div class="input-item">
+            <label>Accom. £</label>
+            <input type="number" id="budget-input" value="4000" step="100" class="main-input" oninput="calculateAll()">
         </div>
-        <div class="dash-item">
-            <label>Food Budget (£)</label>
-            <input type="number" id="food-input" class="dash-input" value="350" oninput="calculate()">
+        <div class="input-item">
+            <label>Food £</label>
+            <input type="number" id="food-input" value="350" step="50" class="main-input" oninput="calculateAll()">
         </div>
-        <div class="dash-item">
-            <label>Trip Days</label>
-            <input type="number" id="days-input" class="dash-input" value="7" oninput="calculate()">
+        <div class="input-item">
+            <label>Days</label>
+            <input type="number" id="days-input" value="7" min="1" class="main-input" oninput="calculateAll()">
         </div>
-        <div class="dash-item">
-            <label>Rooms Occupied</label>
-            <div id="total-rooms" style="font-size: 1.2rem; font-weight: bold; color: var(--accent); padding-top: 5px;">0</div>
+        <div class="input-item">
+            <label>Rooms</label>
+            <div id="total-rooms-badge" class="counter-badge">0</div>
         </div>
     </div>
 
-    <h2>Family Groups <button class="btn-del" style="background: var(--secondary); color: white; border-radius: 4px; width: auto; padding: 0 10px;" onclick="addFamily()">+ Add</button></h2>
-    
-    <div id="family-list"></div>
+    <button class="btn-add" onclick="addFamily()">+ Add Family Group</button>
 
-    <div class="breakdown-text" id="breakdown-info"></div>
+    <h2>Accommodation Split</h2>
+    <div class="table-responsive">
+        <table>
+            <thead>
+                <tr>
+                    <th>Family</th>
+                    <th>Ppl</th>
+                    <th>Rooms</th>
+                    <th style="text-align: right;">Total</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody id="room-body"></tbody>
+        </table>
+    </div>
+    <div id="summary-r" class="summary-box"></div>
 
-    <div class="invoice-card">
-        <h3 style="margin-top: 0; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 10px;">Final Invoices</h3>
-        <div id="invoice-list"></div>
+    <h2>Food Cost Split</h2>
+    <div class="table-responsive">
+        <table>
+            <thead>
+                <tr>
+                    <th>Family</th>
+                    <th>Ppl</th>
+                    <th>Units</th>
+                    <th style="text-align: right;">Total</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody id="weighted-body"></tbody>
+        </table>
+    </div>
+    <div id="summary-w" class="summary-box"></div>
+
+    <div class="grand-total-section">
+        <h2>Final Invoices</h2>
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="color: white;">Family</th>
+                        <th style="color: white;">Accom</th>
+                        <th style="color: white;">Food</th>
+                        <th style="text-align: right; color: white;">Total</th>
+                    </tr>
+                </thead>
+                <tbody id="grand-body"></tbody>
+            </table>
+        </div>
     </div>
 </div>
 
@@ -178,55 +228,73 @@
         { name: "Rigby s", count: 2, u1: 2.0, rooms: 1 }
     ];
 
-    function calculate() {
-        const accomTotal = parseFloat(document.getElementById('budget-input').value) || 0;
-        const foodTotal = parseFloat(document.getElementById('food-input').value) || 0;
+    function calculateAll() {
+        const accomBudget = parseFloat(document.getElementById('budget-input').value) || 0;
+        const foodBudget = parseFloat(document.getElementById('food-input').value) || 0;
         const days = parseFloat(document.getElementById('days-input').value) || 1;
+        
+        const totalPeople = families.reduce((sum, f) => sum + f.count, 0);
+        const totalU1 = families.reduce((sum, f) => sum + f.u1, 0);
+        const totalRooms = families.reduce((sum, f) => sum + f.rooms, 0);
 
-        const totalRooms = families.reduce((s, f) => s + f.rooms, 0);
-        const totalUnits = families.reduce((s, f) => s + f.u1, 0);
-        const totalPeople = families.reduce((s, f) => s + f.count, 0);
+        document.getElementById('total-rooms-badge').innerText = totalRooms;
 
-        document.getElementById('total-rooms').innerText = totalRooms;
+        const avgAccomPerDay = totalPeople > 0 ? (accomBudget / totalPeople) / days : 0;
+        const avgFoodPerDay = totalPeople > 0 ? (foodBudget / totalPeople) / days : 0;
 
-        // Render Cards
-        const list = document.getElementById('family-list');
-        list.innerHTML = '';
+        // Render Room Table
+        const rBody = document.getElementById('room-body');
+        rBody.innerHTML = '';
         families.forEach((f, i) => {
-            list.innerHTML += `
-                <div class="family-card">
-                    <input type="text" class="family-name" value="${f.name}" oninput="update(${i}, 'name', this.value)">
-                    <div class="card-controls">
-                        <div class="control-group"><span>Ppl</span><input type="number" class="card-input" value="${f.count}" oninput="update(${i}, 'count', parseFloat(this.value)||0)"></div>
-                        <div class="control-group"><span>Rooms</span><input type="number" class="card-input" value="${f.rooms}" oninput="update(${i}, 'rooms', parseFloat(this.value)||0)"></div>
-                        <div class="control-group"><span>Units</span><input type="number" class="card-input" value="${f.u1}" step="0.25" oninput="update(${i}, 'u1', parseFloat(this.value)||0)"></div>
-                    </div>
-                    <button class="btn-del" onclick="remove(${i})">✕</button>
-                </div>`;
+            const share = totalRooms > 0 ? (f.rooms / totalRooms) * accomBudget : 0;
+            rBody.innerHTML += `
+                <tr>
+                    <td><input type="text" class="name-input" value="${f.name}" oninput="updateField(${i}, 'name', this.value)"></td>
+                    <td><input type="number" value="${f.count}" oninput="updateField(${i}, 'count', parseInt(this.value) || 0)"></td>
+                    <td><input type="number" value="${f.rooms}" step="1" oninput="updateField(${i}, 'rooms', parseFloat(this.value) || 0)"></td>
+                    <td class="currency">£${share.toFixed(2)}</td>
+                    <td><button class="btn-del" onclick="removeFamily(${i})">✕</button></td>
+                </tr>`;
         });
+        document.getElementById('summary-r').innerText = `£${avgAccomPerDay.toFixed(2)} per person / per day`;
 
-        // Render Invoices
-        const invList = document.getElementById('invoice-list');
-        invList.innerHTML = '';
-        families.forEach(f => {
-            const aShare = totalRooms > 0 ? (f.rooms / totalRooms) * accomTotal : 0;
-            const fShare = totalUnits > 0 ? (f.u1 / totalUnits) * foodTotal : 0;
-            invList.innerHTML += `
-                <div class="invoice-row">
-                    <span class="name">${f.name}</span>
-                    <span class="amt">£${(aShare + fShare).toLocaleString(undefined, {minimumFractionDigits:2})}</span>
-                </div>`;
+        // Render Food Table
+        const wBody = document.getElementById('weighted-body');
+        wBody.innerHTML = '';
+        families.forEach((f, i) => {
+            const share = totalU1 > 0 ? (f.u1 / totalU1) * foodBudget : 0;
+            wBody.innerHTML += `
+                <tr>
+                    <td><input type="text" class="name-input" value="${f.name}" oninput="updateField(${i}, 'name', this.value)"></td>
+                    <td><input type="number" value="${f.count}" oninput="updateField(${i}, 'count', parseInt(this.value) || 0)"></td>
+                    <td><input type="number" value="${f.u1}" step="0.25" oninput="updateField(${i}, 'u1', parseFloat(this.value) || 0)"></td>
+                    <td class="currency">£${share.toFixed(2)}</td>
+                    <td><button class="btn-del" onclick="removeFamily(${i})">✕</button></td>
+                </tr>`;
         });
+        document.getElementById('summary-w').innerText = `£${avgFoodPerDay.toFixed(2)} per person / per day`;
 
-        const perDay = totalPeople > 0 ? ((accomTotal + foodTotal) / totalPeople / days).toFixed(2) : 0;
-        document.getElementById('breakdown-info').innerText = `Avg cost per person: £${perDay} / day`;
+        // Render Grand Total
+        const gBody = document.getElementById('grand-body');
+        gBody.innerHTML = '';
+        families.forEach((f) => {
+            const aShare = totalRooms > 0 ? (f.rooms / totalRooms) * accomBudget : 0;
+            const fShare = totalU1 > 0 ? (f.u1 / totalU1) * foodBudget : 0;
+            gBody.innerHTML += `
+                <tr>
+                    <td style="font-weight: bold; color: white;">${f.name}</td>
+                    <td style="color: #bdc3c7;">£${aShare.toFixed(2)}</td>
+                    <td style="color: #bdc3c7;">£${fShare.toFixed(2)}</td>
+                    <td class="currency">£${(aShare + fShare).toFixed(2)}</td>
+                </tr>`;
+        });
     }
 
-    function update(i, field, val) { families[i][field] = val; calculate(); }
-    function addFamily() { families.push({ name: "New Group", count: 2, u1: 1.5, rooms: 1 }); calculate(); }
-    function remove(i) { families.splice(i, 1); calculate(); }
+    function updateField(i, field, val) { families[i][field] = val; calculateAll(); }
+    function addFamily() { families.push({ name: "New Group", count: 2, u1: 1.5, rooms: 1 }); calculateAll(); }
+    function removeFamily(i) { families.splice(i, 1); calculateAll(); }
 
-    calculate();
+    calculateAll();
 </script>
 </body>
 </html>
