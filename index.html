@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Donnas' Big Birthday</title>
-   <style>
+  <style>
     :root {
         --primary: #2c3e50;
         --accent: #27ae60;
@@ -18,100 +18,102 @@
         color: var(--primary);
         display: flex;
         justify-content: center;
-        padding: 10px; /* Reduced for mobile */
+        padding: 10px;
         margin: 0;
     }
     .container {
         background: white;
-        padding: 15px; /* Reduced for mobile */
+        padding: 15px;
         border-radius: 12px;
         box-shadow: 0 10px 25px rgba(0,0,0,0.1);
         max-width: 850px;
         width: 100%;
         box-sizing: border-box;
     }
-    h1 { text-align: center; font-size: 1.5rem; margin-bottom: 20px; }
-    h2 { border-bottom: 2px solid #eee; padding-bottom: 10px; margin-top: 30px; color: var(--secondary); font-size: 1.1em; }
+    h1 { text-align: center; font-size: 1.4rem; margin-bottom: 15px; }
+    h2 { border-bottom: 2px solid #eee; padding-bottom: 8px; margin-top: 25px; color: var(--secondary); font-size: 1.1em; }
     
     .global-inputs {
         background: #fff;
-        padding: 15px;
+        padding: 12px;
         border: 2px solid var(--accent);
         border-radius: 8px;
         display: flex;
-        flex-wrap: wrap; /* Key for mobile stacking */
+        flex-wrap: wrap;
         justify-content: center;
-        gap: 15px;
+        gap: 10px;
         margin-bottom: 20px;
         position: sticky;
         top: 0;
         z-index: 10;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.05);
     }
     
-    .input-item { flex: 1 1 120px; text-align: center; }
-    .input-item label { display: block; font-weight: 600; margin-bottom: 5px; font-size: 0.75em; text-transform: uppercase; }
+    .input-item { flex: 1 1 100px; text-align: center; }
+    .input-item label { display: block; font-weight: 600; margin-bottom: 3px; font-size: 0.7em; text-transform: uppercase; }
 
     .counter-badge {
         background: #e6f4ea;
         color: var(--accent);
-        font-size: 1.2em;
+        font-size: 1.1em;
         font-weight: bold;
-        padding: 4px 12px;
+        padding: 4px 10px;
         border-radius: 6px;
         border: 2px dashed var(--accent);
-        display: inline-block;
     }
 
-    /* Wrap tables in a scrollable div */
+    /* Wrap tables to allow horizontal swiping */
     .table-responsive {
         width: 100%;
         overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
+        margin-bottom: 10px;
+        border-radius: 8px;
     }
 
     table {
         width: 100%;
-        min-width: 500px; /* Ensures table doesn't squash too small */
         border-collapse: collapse;
-        margin-bottom: 10px;
+        font-size: 0.9em;
+        min-width: 450px; /* Prevents squashing headers */
     }
-    th, td { text-align: left; padding: 10px; border-bottom: 1px solid #eee; }
-    th { background: #fafafa; font-weight: 600; font-size: 0.7em; text-transform: uppercase; }
+    th, td { text-align: left; padding: 10px 5px; border-bottom: 1px solid #eee; }
+    th { background: #fafafa; font-weight: 600; font-size: 0.7em; text-transform: uppercase; color: #7f8c8d; }
     
-    input { padding: 6px; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; /* Prevents iOS zoom on focus */ }
-    input[type="number"] { width: 55px; }
-    .name-input { width: 100px; font-weight: 600; border: none; background: transparent; }
+    /* Input sizing for mobile */
+    input { padding: 6px; border: 1px solid #ddd; border-radius: 4px; font-size: 16px !important; width: 100%; box-sizing: border-box; }
+    input[type="number"] { width: 50px; text-align: center; }
+    .name-input { font-weight: 700; border: none; background: transparent; width: 80px; }
 
-    .main-input { width: 90px !important; border: 2px solid var(--accent); text-align: center; font-size: 1em; font-weight: bold; }
-    .currency { color: var(--accent); font-weight: bold; white-space: nowrap; }
+    .main-input { border: 2px solid var(--accent); font-weight: bold; width: 80px !important; }
+    .currency { color: var(--accent); font-weight: 700; text-align: right; white-space: nowrap; }
     
     .summary-box {
         background: #f8f9fa;
-        padding: 12px;
+        padding: 10px;
         border-radius: 8px;
         text-align: center;
         font-weight: 600;
-        font-size: 0.85em;
+        font-size: 0.8em;
         color: var(--secondary);
-        margin-bottom: 20px;
+        margin-bottom: 15px;
         border: 1px dashed #cbd5e0;
     }
 
+    /* Fix for Grand Total layout in Screenshot 2026-05-14 at 14.27.54.png */
     .grand-total-section {
         margin-top: 30px;
-        padding: 15px;
-        background: linear-gradient(135deg, #2c3e50, #34495e);
+        padding: 12px;
+        background: #2c3e50;
         color: white;
         border-radius: 8px;
     }
     .grand-total-section h2 { color: white; border-bottom: 1px solid rgba(255,255,255,0.2); margin-top: 0; }
-    .grand-total-section th { background: rgba(255, 255, 255, 0.1); color: #cbd5e0; }
-    .grand-total-section td { border-bottom: 1px solid rgba(255,255,255,0.1); }
+    .grand-total-section th { background: rgba(255,255,255,0.05); color: #bdc3c7; border: none; }
+    .grand-total-section td { border-bottom: 1px solid rgba(255,255,255,0.1); padding: 12px 5px; }
+    .grand-total-section .currency { color: #2ecc71; }
+    .grand-total-section .family-name { font-weight: bold; }
 
-    .btn { cursor: pointer; border: none; border-radius: 4px; padding: 8px 16px; font-size: 0.9em; }
-    .btn-add { background: var(--secondary); color: white; margin-bottom: 15px; width: 100%; }
-    .btn-del { background: var(--danger); color: white; padding: 4px 8px; }
+    .btn-add { background: var(--secondary); color: white; margin-bottom: 15px; width: 100%; padding: 12px; border: none; border-radius: 6px; font-weight: bold; }
+    .btn-del { background: var(--danger); color: white; padding: 5px 8px; border: none; border-radius: 4px; font-size: 12px; }
 </style>
 </head>
 <body>
