@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Donnas' 40th Budget</title>
     <style>
         :root {
@@ -12,44 +12,40 @@
             --danger: #e74c3c;
             --bg: #f4f7f6;
         }
-        body { font-family: -apple-system, sans-serif; background: var(--bg); margin: 0; padding: 10px; color: var(--primary); }
-        .container { max-width: 900px; margin: 0 auto; background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        body { font-family: sans-serif; background: var(--bg); margin: 0; padding: 10px; color: var(--primary); }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 15px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
         
-        h1 { text-align: center; font-size: 1.5rem; margin-bottom: 20px; }
-
+        /* Dashboard Stays Compact */
         .dashboard { 
-            display: flex; flex-wrap: wrap; gap: 15px; background: #fff; padding: 15px; 
-            border: 2px solid var(--accent); border-radius: 8px; margin-bottom: 25px;
-            position: sticky; top: 5px; z-index: 100; box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            display: flex; flex-wrap: wrap; gap: 10px; background: #fff; padding: 10px; 
+            border: 2px solid var(--accent); border-radius: 8px; margin-bottom: 20px;
+            position: sticky; top: 5px; z-index: 100;
         }
-        .dash-item { flex: 1 1 100px; display: flex; flex-direction: column; }
-        .dash-item label { font-size: 0.7rem; font-weight: bold; text-transform: uppercase; margin-bottom: 5px; color: #7f8c8d; }
-        .dash-input { padding: 8px; border: 1px solid #ddd; border-radius: 6px; font-size: 16px; font-weight: bold; }
+        .dash-item { flex: 1 1 120px; display: flex; flex-direction: column; }
+        .dash-item label { font-size: 0.7rem; font-weight: bold; text-transform: uppercase; margin-bottom: 4px; color: #7f8c8d; }
+        .dash-input { padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; font-weight: bold; }
 
-        /* The scrollable table container */
-        .table-container {
-            width: 100%;
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-            margin-bottom: 20px;
-            border: 1px solid #eee;
-            border-radius: 8px;
+        /* The Table Fix */
+        .row-item {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 12px 0; border-bottom: 1px solid #eee; flex-wrap: wrap;
         }
+        .family-info { flex: 1 1 100%; display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+        .name-input { font-weight: bold; border: none; font-size: 1rem; width: 120px; background: transparent; }
+        
+        .inputs-area { display: flex; gap: 8px; flex: 1; align-items: center; }
+        .input-box { display: flex; flex-direction: column; align-items: center; }
+        .input-box span { font-size: 0.6rem; text-transform: uppercase; color: #999; margin-bottom: 2px; }
+        .val-input { width: 50px; padding: 6px; text-align: center; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; }
 
-        table { width: 100%; border-collapse: collapse; min-width: 650px; } /* Force width for scroll */
-        th, td { text-align: left; padding: 12px 10px; border-bottom: 1px solid #eee; white-space: nowrap; }
-        th { background: #fafafa; font-size: 0.75rem; text-transform: uppercase; color: #95a5a6; }
+        .total-area { text-align: right; min-width: 90px; }
+        .total-amt { color: var(--accent); font-weight: bold; font-size: 1.1rem; display: block; }
         
-        input { padding: 8px; border: 1px solid #eee; border-radius: 4px; font-size: 16px; }
-        .name-col { width: 140px; font-weight: bold; border: none; background: transparent; }
-        .num-input { width: 60px; text-align: center; }
-        
-        .total-col { font-weight: bold; color: var(--accent); text-align: right; }
-        
-        .btn-add { width: 100%; padding: 15px; background: var(--secondary); color: white; border: none; border-radius: 8px; font-weight: bold; font-size: 1rem; cursor: pointer; margin-bottom: 20px; }
-        .btn-del { color: var(--danger); background: none; border: 1px solid #f8d7da; border-radius: 4px; padding: 4px 8px; cursor: pointer; }
+        .btn-del { color: var(--danger); background: none; border: none; font-size: 1.2rem; cursor: pointer; padding: 0 10px; }
+        .btn-add { width: 100%; padding: 12px; background: var(--secondary); color: white; border: none; border-radius: 6px; font-weight: bold; margin: 15px 0; }
 
-        .summary-banner { background: var(--primary); color: white; padding: 15px; border-radius: 8px; text-align: center; font-weight: bold; }
+        .invoice-box { background: var(--primary); color: white; padding: 15px; border-radius: 8px; margin-top: 20px; }
+        .inv-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.1); }
     </style>
 </head>
 <body>
@@ -61,29 +57,15 @@
         <div class="dash-item"><label>Accom (£)</label><input type="number" id="accom-in" class="dash-input" value="4000" oninput="calc()"></div>
         <div class="dash-item"><label>Food (£)</label><input type="number" id="food-in" class="dash-input" value="350" oninput="calc()"></div>
         <div class="dash-item"><label>Activity (£)</label><input type="number" id="act-in" class="dash-input" value="0" oninput="calc()"></div>
-        <div class="dash-item"><label>Total Rooms</label><div id="room-total" style="font-weight:bold; color:var(--accent); font-size:1.2rem; margin-top:5px">0</div></div>
+        <div class="dash-item"><label>Rooms</label><div id="room-total" style="font-weight:bold; color:var(--accent); margin-top:5px">0</div></div>
     </div>
 
+    <div id="list"></div>
     <button class="btn-add" onclick="add()">+ Add Family Group</button>
 
-    <div class="table-container">
-        <table>
-            <thead>
-                <tr>
-                    <th>Family</th>
-                    <th>People</th>
-                    <th>Rooms</th>
-                    <th>Food Units</th>
-                    <th style="text-align: right;">Total Owed</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody id="table-body"></tbody>
-        </table>
-    </div>
-
-    <div class="summary-banner" id="bottom-summary">
-        Average cost per person: £0.00
+    <div class="invoice-box">
+        <h3 style="margin-top:0">Total Invoices</h3>
+        <div id="invoices"></div>
     </div>
 </div>
 
@@ -103,13 +85,14 @@
 
         const tRooms = families.reduce((s, f) => s + f.rooms, 0);
         const tUnits = families.reduce((s, f) => s + f.u1, 0);
-        const tPeople = families.reduce((s, f) => s + f.count, 0);
         const tGroups = families.length;
 
         document.getElementById('room-total').innerText = tRooms;
 
-        const body = document.getElementById('table-body');
-        body.innerHTML = '';
+        const list = document.getElementById('list');
+        const inv = document.getElementById('invoices');
+        list.innerHTML = '';
+        inv.innerHTML = '';
 
         families.forEach((f, i) => {
             const aS = tRooms > 0 ? (f.rooms / tRooms) * aTotal : 0;
@@ -117,23 +100,33 @@
             const actS = tGroups > 0 ? actTotal / tGroups : 0;
             const total = aS + fS + actS;
 
-            body.innerHTML += `
-                <tr>
-                    <td><input type="text" class="name-col" value="${f.name}" oninput="upd(${i},'name',this.value)"></td>
-                    <td><input type="number" class="num-input" value="${f.count}" oninput="upd(${i},'count',parseFloat(this.value)||0)"></td>
-                    <td><input type="number" class="num-input" value="${f.rooms}" oninput="upd(${i},'rooms',parseFloat(this.value)||0)"></td>
-                    <td><input type="number" class="num-input" value="${f.u1}" step="0.25" oninput="upd(${i},'u1',parseFloat(this.value)||0)"></td>
-                    <td class="total-col">£${total.toFixed(2)}</td>
-                    <td><button class="btn-del" onclick="rem(${i})">✕</button></td>
-                </tr>`;
-        });
+            list.innerHTML += `
+                <div class="row-item">
+                    <div class="family-info">
+                        <input type="text" class="name-input" value="${f.name}" oninput="upd(${i},'name',this.value)">
+                        <button class="btn-del" onclick="rem(${i})">✕</button>
+                    </div>
+                    <div class="inputs-area">
+                        <div class="input-box"><span>Ppl</span><input type="number" class="val-input" value="${f.count}" oninput="upd(${i},'count',parseFloat(this.value)||0)"></div>
+                        <div class="input-box"><span>Rooms</span><input type="number" class="val-input" value="${f.rooms}" oninput="upd(${i},'rooms',parseFloat(this.value)||0)"></div>
+                        <div class="input-box"><span>Food</span><input type="number" class="val-input" value="${f.u1}" step="0.25" oninput="upd(${i},'u1',parseFloat(this.value)||0)"></div>
+                    </div>
+                    <div class="total-area">
+                        <span style="font-size:0.6rem; color:#999; text-transform:uppercase">Owes</span>
+                        <span class="total-amt">£${total.toFixed(2)}</span>
+                    </div>
+                </div>`;
 
-        const perPerson = tPeople > 0 ? (aTotal + fTotal + actTotal) / tPeople : 0;
-        document.getElementById('bottom-summary').innerText = `Total Average per Person: £${perPerson.toFixed(2)}`;
+            inv.innerHTML += `
+                <div class="inv-row">
+                    <span>${f.name}</span>
+                    <span style="color:#2ecc71; font-weight:bold">£${total.toLocaleString(undefined,{minimumFractionDigits:2})}</span>
+                </div>`;
+        });
     }
 
     function upd(i, fld, v) { families[i][fld] = v; calc(); }
-    function add() { families.push({ name: "New Group", count: 2, u1: 1, rooms: 1 }); calc(); }
+    function add() { families.push({ name: "New", count: 2, u1: 1, rooms: 1 }); calc(); }
     function rem(i) { families.splice(i, 1); calc(); }
 
     calc();
