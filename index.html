@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donnas' Big Birthday</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --accent: #27ae60;
+            --secondary: #2980b9;
+            --danger: #e74c3c;
+            --bg: #f4f7f6;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg);
+            color: var(--primary);
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            max-width: 850px;
+            width: 100%;
+        }
+        h1 { text-align: center; margin-bottom: 5px; }
+        h2 { border-bottom: 2px solid #eee; padding-bottom: 10px; margin-top: 40px; color: var(--secondary); font-size: 1.2em; display: flex; justify-content: space-between; align-items: center;}
+        
+        .global-inputs {
+            background: #fff;
+            padding: 20px;
+            border: 2px solid var(--accent);
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 30px;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        
+        .input-item { text-align: center; }
+        .input-item label { display: block; font-weight: 600; margin-bottom: 5px; font-size: 0.85em; text-transform: uppercase; }
+
+        .counter-badge {
+            background: #e6f4ea;
+            color: var(--accent);
+            font-size: 1.3em;
+            font-weight: bold;
+            padding: 6px 16px;
+            border-radius: 6px;
+            border: 2px dashed var(--accent);
+            display: inline-block;
+            min-width: 40px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 10px;
+        }
+        th, td {
+            text-align: left;
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+        }
+        th { background: #fafafa; font-weight: 600; font-size: 0.75em; text-transform: uppercase; }
+        
+        input {
+            padding: 6px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        input[type="number"] { width: 65px; }
+        .name-input { width: 120px; font-weight: 600; border: none; background: transparent; }
+        .name-input:focus { background: #fff; border: 1px solid #ddd; }
+
+        .main-input { width: 110px !important; border: 2px solid var(--accent); text-align: center; font-size: 1.1em; font-weight: bold; }
+        .currency { color: var(--accent); font-weight: bold; }
+        
+        .summary-box {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 600;
+            color: var(--secondary);
+            margin-top: 15px;
+            border: 1px dashed #cbd5e0;
+        }
+
+        .grand-total-section {
+            margin-top: 40px;
+            padding: 20px;
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        }
+        .grand-total-section h2 {
+            color: white;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+            margin-top: 0;
+        }
+        .grand-total-section th {
+            background: rgba(255, 255, 255, 0.1);
+            color: #cbd5e0;
+        }
+        .grand-total-section td {
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .grand-total-section .currency {
+            color: #2ecc71;
+            font-size: 1.1em;
+        }
+
+        .btn { cursor: pointer; border: none; border-radius: 4px; padding: 6px 12px; font-size: 0.85em; transition: 0.2s; }
+        .btn-add { background: var(--secondary); color: white; margin-bottom: 10px;}
+        .btn-del { background: var(--danger); color: white; padding: 2px 6px; }
+        .btn:hover { opacity: 0.8; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Donnas' Big Birthday</h1>
+
+    <div class="global-inputs">
+        <div class="input-item">
+            <label>Accom. Budget</label>
+            £ <input type="number" id="budget-input" value="4000" step="100" class="main-input" oninput="calculateAll()">
+        </div>
+        <div class="input-item">
+            <label>Food Budget</label>
+            £ <input type="number" id="food-input" value="350" step="50" class="main-input" oninput="calculateAll()">
+        </div>
+        <div class="input-item">
+            <label>Activities Budget</label>
+            £ <input type="number" id="activity-input" value="0" step="50" class="main-input" oninput="calculateAll()">
+        </div>
+        <div class="input-item">
+            <label>Trip Length</label>
+            <input type="number" id="days-input" value="7" min="1" class="main-input" style="width: 65px !important;" oninput="calculateAll()"> Days
+        </div>
+        <div class="input-item">
+            <label>Total Rooms Needed</label>
+            <div id="total-rooms-badge" class="counter-badge">0</div>
+        </div>
+    </div>
+
+    <button class="btn btn-add" onclick="addFamily()">+ Add Family Group</button>
+
+    <h2>Accommodation Split (Room Usage)</h2>
+    <div style="font-size: 0.85em; color: #666; margin-bottom: 10px;">Flat split by number of bedrooms occupied.</div>
+    <table>
+        <thead>
+            <tr>
+                <th>Family</th>
+                <th>People</th>
+                <th>Rooms</th>
+                <th>Total for Accom.</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody id="room-body"></tbody>
+    </table>
+    <div id="summary-r" class="summary-box"></div>
+
+    <h2>Food Cost Split (Weighted)</h2>
+    <div style="font-size: 0.85em; color: #666; margin-bottom: 10px;">Adults = 1.0 • Teens = 0.5 • Kids = 0.25 • William = 2.5 😉</div>
+    <table>
+        <thead>
+            <tr>
+                <th>Family</th>
+                <th>People</th>
+                <th>Food Units</th>
+                <th>Total for Food</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody id="weighted-body"></tbody>
+    </table>
+    <div id="summary-w" class="summary-box"></div>
+
+    <h2>Activities Split (Flat Per Group)</h2>
+    <div style="font-size: 0.85em; color: #666; margin-bottom: 10px;">Total budget split completely evenly among all family groups.</div>
+    <table>
+        <thead>
+            <tr>
+                <th>Family</th>
+                <th>Total for Activities</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody id="activity-body"></tbody>
+    </table>
+    <div id="summary-a" class="summary-box"></div>
+
+    <div class="grand-total-section">
+        <h2>Grand Total Invoices</h2>
+        <div style="font-size: 0.85em; color: #cbd5e0; margin-bottom: 10px;">Combined final amounts owed across all modules.</div>
+        <table>
+            <thead>
+                <tr>
+                    <th style="color: white;">Family</th>
+                    <th style="color: white;">Accom</th>
+                    <th style="color: white;">Food</th>
+                    <th style="color: white;">Activities</th>
+                    <th style="color: white;">Total to Pay</th>
+                </tr>
+            </thead>
+            <tbody id="grand-body"></tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    let families = [
+        { name: "Rigby", count: 3, u1: 2.25, rooms: 2 },
+        { name: "Smith", count: 6, u1: 3.5, rooms: 3 },
+        { name: "Dickson", count: 4, u1: 3.0, rooms: 2 },
+        { name: "Hall", count: 2, u1: 1.25, rooms: 1 },
+        { name: "Rigby s", count: 2, u1: 2.0, rooms: 1 }
+    ];
+
+    function calculateAll() {
+        const accomBudget = parseFloat(document.getElementById('budget-input').value) || 0;
+        const foodBudget = parseFloat(document.getElementById('food-input').value) || 0;
+        const activityBudget = parseFloat(document.getElementById('activity-input').value) || 0;
+        const days = parseFloat(document.getElementById('days-input').value) || 1;
+        
+        const totalGroups = families.length;
+        const totalPeople = families.reduce((sum, f) => sum + f.count, 0);
+        const totalU1 = families.reduce((sum, f) => sum + f.u1, 0);
+        const totalRooms = families.reduce((sum, f) => sum + f.rooms, 0);
+
+        // Update the sticky global badge counter dynamically
+        document.getElementById('total-rooms-badge').innerText = totalRooms;
+
+        const avgAccomPerDay = totalPeople > 0 ? (accomBudget / totalPeople) / days : 0;
+        const avgFoodPerDay = totalPeople > 0 ? (foodBudget / totalPeople) / days : 0;
+        const avgActivityPerGroup = totalGroups > 0 ? (activityBudget / totalGroups) : 0;
+
+        // Table 1: Room Usage
+        const rBody = document.getElementById('room-body');
+        rBody.innerHTML = '';
+        families.forEach((f, i) => {
+            const share = totalRooms > 0 ? (f.rooms / totalRooms) * accomBudget : 0;
+            rBody.innerHTML += `
+                <tr>
+                    <td><input type="text" class="name-input" value="${f.name}" oninput="updateField(${i}, 'name', this.value)"></td>
+                    <td><input type="number" value="${f.count}" oninput="updateField(${i}, 'count', parseInt(this.value) || 0)"></td>
+                    <td><input type="number" value="${f.rooms}" step="1" min="0" oninput="updateField(${i}, 'rooms', parseFloat(this.value) || 0)"></td>
+                    <td class="currency">£${share.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+                    <td><button class="btn btn-del" onclick="removeFamily(${i})">✕</button></td>
+                </tr>`;
+        });
+        document.getElementById('summary-r').innerText = `Accommodation Breakdown: £${avgAccomPerDay.toFixed(2)} per person / per day`;
+
+        // Table 2: Food Weighted
+        const wBody = document.getElementById('weighted-body');
+        wBody.innerHTML = '';
+        families.forEach((f, i) => {
+            const share = totalU1 > 0 ? (f.u1 / totalU1) * foodBudget : 0;
+            wBody.innerHTML += `
+                <tr>
+                    <td><input type="text" class="name-input" value="${f.name}" oninput="updateField(${i}, 'name', this.value)"></td>
+                    <td><input type="number" value="${f.count}" oninput="updateField(${i}, 'count', parseInt(this.value) || 0)"></td>
+                    <td><input type="number" value="${f.u1}" step="0.25" min="0" oninput="updateField(${i}, 'u1', parseFloat(this.value) || 0)"></td>
+                    <td class="currency">£${share.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+                    <td><button class="btn btn-del" onclick="removeFamily(${i})">✕</button></td>
+                </tr>`;
+        });
+        document.getElementById('summary-w').innerText = `Food Cost Breakdown: £${avgFoodPerDay.toFixed(2)} per person / per day`;
+
+        // Table 3: Activities (Flat Split)
+        const aBody = document.getElementById('activity-body');
+        aBody.innerHTML = '';
+        families.forEach((f, i) => {
+            const share = totalGroups > 0 ? (activityBudget / totalGroups) : 0;
+            aBody.innerHTML += `
+                <tr>
+                    <td><input type="text" class="name-input" value="${f.name}" oninput="updateField(${i}, 'name', this.value)"></td>
+                    <td class="currency">£${share.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+                    <td><button class="btn btn-del" onclick="removeFamily(${i})">✕</button></td>
+                </tr>`;
+        });
+        document.getElementById('summary-a').innerText = `Activities Breakdown: £${avgActivityPerGroup.toFixed(2)} flat per family group`;
+
+        // Table 4: Grand Totals
+        const gBody = document.getElementById('grand-body');
+        gBody.innerHTML = '';
+        families.forEach((f) => {
+            const accomShare = totalRooms > 0 ? (f.rooms / totalRooms) * accomBudget : 0;
+            const foodShare = totalU1 > 0 ? (f.u1 / totalU1) * foodBudget : 0;
+            const activityShare = totalGroups > 0 ? (activityBudget / totalGroups) : 0;
+            const grandTotal = accomShare + foodShare + activityShare;
+
+            gBody.innerHTML += `
+                <tr>
+                    <td style="font-weight: bold; color: white;">${f.name}</td>
+                    <td style="color: #cbd5e0;">£${accomShare.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+                    <td style="color: #cbd5e0;">£${foodShare.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+                    <td style="color: #cbd5e0;">£${activityShare.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+                    <td class="currency" style="font-weight: bold;">£${grandTotal.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+                </tr>`;
+        });
+    }
+
+    function updateField(index, field, val) {
+        families[index][field] = val;
+        calculateAll();
+    }
+
+    function addFamily() {
+        families.push({ name: "New Group", count: 2, u1: 1.5, rooms: 1 });
+        calculateAll();
+    }
+
+    function removeFamily(index) {
+        families.splice(index, 1);
+        calculateAll();
+    }
+
+    calculateAll();
+</script>
+
+</body>
+</html>
